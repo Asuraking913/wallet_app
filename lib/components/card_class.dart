@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:wallet/components/text_class.dart';
+import 'package:flutter/services.dart';
+import 'dart:math' as math; 
 
 class CardTemplate extends StatelessWidget {
   
 	final String number = '2345028374562834';
 	final String expDate;
 	final String cardType;
+	final Color topColorType;
+	final Color bottomColorType;
+	final Color textColor;
 
 	CardTemplate({
 	 required this.expDate, 
-	 required this.cardType 
+	 required this.cardType, 
+	 required this.topColorType, 
+	 required this.bottomColorType, 
+	 required this.textColor
 	 });
 
 
   @override
   Widget build(BuildContext context) {
+
+  	String cardTypePath = cardType == 'master' ? "asset/master.png" : 'asset/visa.png';
+
     return Container(
     		padding: EdgeInsets.all(10),
 
@@ -22,35 +32,59 @@ class CardTemplate extends StatelessWidget {
     				children: <Widget>[
 
     					Container(
-    						padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
-    						decoration: BoxDecoration(
-    								color: Colors.green[300],
-    								borderRadius: BorderRadius.only(
-    										topLeft: Radius.circular(15),
-    										topRight: Radius.circular(15)
-    									)
-    							),
-    					  child: Row(
-    					  	children: <Widget>[
-    					  		Icon(
-    					  				Icons.wifi,
-    					  				color: Colors.white,
-    					  			), 
-    					  
-    					  		Spacer(),
-    					  
-    					  		Image(
-    					  				image: AssetImage('asset/visa.png'),
-    					  				width: 80,
-    					  				height: 80,
-    					  			)
-    					  	],
-    					  	),
-    					), 
+    							child: Stack(
+    									children: [
+
+    										cardType == "visa"
+
+    										?
+
+    										ClipRRect(
+    											borderRadius: BorderRadius.only(
+    													topLeft: Radius.circular(15),
+    													topRight: Radius.circular(15),
+    												),
+    												child: Image.asset('asset/card.jpeg'),
+    											)
+
+    										: 
+
+    										ClipRRect(
+    											borderRadius: BorderRadius.only(
+    													topLeft: Radius.circular(15),
+    													topRight: Radius.circular(15),
+    												),
+    												child: Opacity(
+    													opacity: 0.5,
+    													child: Image.asset('asset/card.jpeg')
+    												),
+    											),
+
+    										Positioned(
+    												right: 8,
+    												top: 0,
+    												child: Image.asset(cardTypePath, width: 70, height: 70,),
+    											), 
+    										Positioned(
+    												left: 8,
+    												top: 20,
+    												child: Transform.rotate(
+    														angle: math.pi / 2,
+    														child: Icon(
+    																Icons.wifi, 
+    																color: textColor,
+    															),
+    													)
+    											)
+    									],
+    								),
+    						),
+
+
     					Container(
     						padding: EdgeInsets.fromLTRB(20, 30, 10, 20),
     						decoration: BoxDecoration(
-    								color: Colors.black,
+    								color: bottomColorType,
     								borderRadius: BorderRadius.only(
     										bottomLeft: Radius.circular(15),
     										bottomRight: Radius.circular(15)
@@ -63,16 +97,16 @@ class CardTemplate extends StatelessWidget {
     					  		  children: [
     					  		  		Row(
     					  		  				children: [
-    					  		  					CardNumberText(text: '${number.substring(0, 4)}', number: 14,),
+    					  		  					CardNumberText(text: '${number.substring(0, 4)}', number: 12, textColor: textColor,),
     					  		  					SizedBox(width: 5),
-    					  		  					CardNumberText(text: '${number.substring(4, 8)}', number: 14,)
+    					  		  					CardNumberText(text: '${number.substring(4, 8)}', number: 12, textColor: textColor,)
     					  		  				],
     					  		  			),
     					  		  		Row(
     					  		  				children: [
-    					  		  					CardNumberText(text: '${number.substring(8, 12)}', number: 16,),
+    					  		  					CardNumberText(text: '${number.substring(8, 12)}', number: 14, textColor: textColor,),
     					  		  					SizedBox(width: 5),
-    					  		  					CardNumberText(text: '${number.substring(12, 16)}', number: 16,)
+    					  		  					CardNumberText(text: '${number.substring(12, 16)}', number: 14, textColor: textColor,)
     					  		  				],
     					  		  			),
     					  		  ],
@@ -87,17 +121,17 @@ class CardTemplate extends StatelessWidget {
     					  		    		'Exp',
     					  		    		style: TextStyle(
     					  		    				fontFamily: 'urba',
-    					  		    				fontSize: 12, 
-    					  		    				color: Colors.white
+    					  		    				fontSize: 10, 
+    					  		    				color: textColor
     					  		    			),
     					  		    	),
     					  		    Text(
-    					  		    		'0/34',
+    					  		    		expDate,
     					  		    		style: TextStyle(
-    					  		    				fontWeight: FontWeight.bold,
+    					  		    				fontWeight: FontWeight.w600,
     					  		    				fontFamily: 'pop',
-    					  		    				fontSize: 14, 
-    					  		    				color: Colors.white
+    					  		    				fontSize: 12, 
+    					  		    				color: textColor
     					  		    			),
     					  		    	),
     					  		  ],
@@ -116,11 +150,14 @@ class CardNumberText extends StatelessWidget {
   
 	final String text;
 	final double number;
+	final Color textColor;
 
   CardNumberText({
  		
  		required this.text, 
- 		required this.number
+ 		required this.number, 
+ 		required this.textColor
+
 
   	});
 
@@ -128,6 +165,6 @@ class CardNumberText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
     		text, 
-    		style: TextStyle(fontFamily: 'urba', fontWeight: FontWeight.bold, fontSize: number, color: Colors.white),
+    		style: TextStyle(fontFamily: 'urba', fontWeight: FontWeight.w600, fontSize: number, color: textColor),
     	);
 }}

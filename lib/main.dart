@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:wallet/color_theme.dart';
 import 'package:wallet/components/card_class.dart';
 import 'package:wallet/components/text_class.dart';
+import 'dart:math' as math;
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
 void main() => runApp(MaterialApp(
     theme: colorClass,
@@ -23,13 +25,27 @@ class Homescreen extends StatelessWidget {
 
 
     return Scaffold(
+          bottomNavigationBar: ConvexAppBar(
+        // style: TabStyle.react,
+        backgroundColor: Colors.white,
+        items: [
+          TabItem(icon: Icon(Icons.home, color: Colors.grey, size: 30,),),
+          TabItem(icon: Icon(Icons.payment, color: Colors.grey, size: 30,)),
+          TabItem(icon: Icon(Icons.design_services, color: Colors.grey, size: 30,)),
+          TabItem(icon: Icon(Icons.chat, color: Colors.grey, size: 30,)),
+          // TabItem(icon: Icon(Icons.more, color: Colors.grey, size: 30,)),
+        ],
+        initialActiveIndex: 1,
+        onTap: (int i) => print('click index=$i'),
+      ),
+        backgroundColor: Color.fromARGB(255, 246, 246, 246),
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start, 
               children: <Widget>[
                 Container(
-                    height: screenHeight * 0.36,
+                    height: screenHeight * 0.38,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     decoration: BoxDecoration(
                       color: themeColor.background,
@@ -95,6 +111,8 @@ class Homescreen extends StatelessWidget {
                 
                           Row(
                               children: <Widget>[
+                                    // MyTextField(color: themeColor.primary, text: '1050.99', fontSize: 30, fontFamily: 'urba',), 
+                                    Icon(Icons.attach_money, color: themeColor.primary, size: 30),
                                     MyTextField(color: themeColor.primary, text: '1050.99', fontSize: 30, fontFamily: 'urba',), 
                                     Spacer(),
                                     MyTextField(color: themeColor.tertiary, text: 'See all', fontSize: 16, fontFamily: 'urba',), 
@@ -156,9 +174,9 @@ class Homescreen extends StatelessWidget {
                 
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical:20),
                   child: Text('My Cards', style: TextStyle(
-                      fontSize: 16, 
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'pop'
                     ),),
@@ -166,26 +184,88 @@ class Homescreen extends StatelessWidget {
 
                 CarouselSlider(
                     options: CarouselOptions(
-                      // enlargeCenterPage: true,  // This makes sure that the current card is zoomed in
-                      // aspectRatio: 16/9,        // Adjust aspect ratio if needed
-                      // viewportFraction: 0.8,   // Adjusts the visible part of adjacent cards
-                      // initialPage: 0,
+                    height: 200, 
                        ),
                     items: [
+                        
                         CardTemplate(
-                          expDate: '0/34',
-                          cardType: 'visa',
+                          expDate: '0/26',
+                          cardType: 'master',
+                          topColorType: Colors.green[100]!,
+                          textColor: themeColor.background,
+                          bottomColorType: Colors.grey[200]!,
+                        ),
+
+                        CardTemplate(
+                          expDate: '0/24',
+                          cardType: 'master',
+                          topColorType: Colors.green[100]!,
+                          textColor: themeColor.background,
+                          bottomColorType: Colors.grey[200]!,
                         ),
                         CardTemplate(
-                          expDate: '0/3324',
+                          expDate: '0/25',
                           cardType: 'visa',
+                          topColorType: themeColor.primary,
+                          textColor: themeColor.secondary,
+                          bottomColorType: themeColor.background,
                         ),
-                        CardTemplate(
-                          expDate: '0/3234',
-                          cardType: 'visa',
-                        ),
-                    ],
+                      ]
                   ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Text('Top Offers', style: TextStyle(
+                      fontSize: 16, 
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'pop'
+                    ),),
+                ), 
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Transform.rotate(
+                            angle: math.pi / 6,
+                            child: Image.asset('asset/discount.png', width: 70, height: 70,), 
+                          ), 
+
+                        SizedBox(width: 8,),
+
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                '20%-40% Off', 
+                                  style:  TextStyle(
+                                  color: themeColor.background, 
+                                  fontFamily: 'urba', fontWeight: 
+                                  FontWeight.w600
+                                  ),
+                                ),
+                              Text('Flat Discount on Every Purchase', style: TextStyle(fontSize:  11, fontFamily: 'pop') ,),
+                            ],
+                          ), 
+                        Spacer(),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.green[100], 
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(8)
+                              )
+                          ),
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Text('Food', style: TextStyle(
+                          fontSize:  11, 
+                          fontFamily: 'pop', 
+                          color: themeColor.secondary,
+                          ) ,),
+                      ),
+                      ],
+                    ),
+                )
 
               ],
             ),
